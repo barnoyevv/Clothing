@@ -42,7 +42,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function Index({ data }) {
   const [open, setOpen] = useState(false);
   const [id, setId] = useState([])
-  const [products, setProducts] = useState({})
   const navigate = useNavigate()
   const deleteItem = async (product_id) => {
     try {
