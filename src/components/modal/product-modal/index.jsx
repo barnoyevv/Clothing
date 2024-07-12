@@ -65,7 +65,7 @@ const modalStyle = {
   p: 4,
 };
 
-export default function Index({ open, handleClose }) {
+export default function Index({ open, handleClose, items = {} }) {
   const [data, setData] = useState([]);
   const getData = async () => {
     try {
@@ -80,21 +80,37 @@ export default function Index({ open, handleClose }) {
   useEffect(() => {
     getData();
   }, []);
+
   const handleSubmit = async (values) => {
-    try {
-      const newSize = values.size.split(/\s+/).filter((soz) => soz !== '');
-      const newColor = values.color.split(/\s+/).filter((soz) => soz !== '');
-      const newValue = { ...values, color: newColor, size: newSize }
-      const response = await product.create(newValue);
-      if (response.status === 201) {
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
-        Notification({ title: "Product added", type: 'success' });
+    const newSize = values.size.split(/\s+/).filter((soz) => soz !== '');
+    const newColor = values.color.split(/\s+/).filter((soz) => soz !== '');
+    const newValue = { ...values, color: newColor, size: newSize }
+    if (!items.id) {
+      try {
+        const response = await product.create(newValue);
+        if (response.status === 201) {
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
+          Notification({ title: "Product added", type: 'success' });
+        }
+      } catch (error) {
+        console.log(error);
+        Notification({ title: "Error", type: 'error' });
       }
-    } catch (error) {
-      console.log(error);
-      Notification({ title: "Error", type: 'error' });
+    } else {
+      try {
+        const response = await product.update(newValue);
+        if (response.status === 200) {
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
+          Notification({ title: "Product updated", type: 'success' });
+        }
+      } catch (error) {
+        console.log(error);
+        Notification({ title: "Error", type: 'error' });
+      }
     }
   };
 
@@ -118,22 +134,22 @@ export default function Index({ open, handleClose }) {
           <Fade in={open}>
             <Box sx={modalStyle}>
               <Typography id="spring-modal-title" variant="h5" sx={{ marginY: "10px", textAlign: "center" }} component="h2">
-                Create Product
+                {items.id ? "Edit Product" : "Create Product"}
               </Typography>
               <Formik
                 initialValues={{
-                  age_max: "",
-                  count: "",
-                  age_min: "",
-                  discount: "",
-                  category_id: "",
-                  made_in: "",
-                  color: "",
-                  for_gender: "",
-                  cost: "",
-                  size: "",
-                  product_name: "",
-                  description: "",
+                  age_max: items.age_max || "",
+                  count: items.count || "",
+                  age_min: items.age_min || "",
+                  discount: items.discount || "",
+                  category_id: items.category_id || "",
+                  made_in: items.made_in || "",
+                  color: items.color || "",
+                  for_gender: items.for_gender || "",
+                  cost: items.cost || "",
+                  size: items.size || "",
+                  product_name: items.product_name || "",
+                  description: items.description || "",
                 }}
                 validationSchema={ProductValidationSchema}
                 onSubmit={handleSubmit}

@@ -119,7 +119,7 @@ export default function Index({ open, handleClose, item }) {
 							</Typography>
 							<Formik
 								initialValues={{
-									category_name: item?.category_name || "",
+									category_name: item?.category_name ? item?.category_name : "",
 								}}
 								validationSchema={CategoryValidationSchema}
 								onSubmit={handleSubmit}

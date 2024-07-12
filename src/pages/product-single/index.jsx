@@ -9,13 +9,14 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import './index.css';
 import { product } from "@service";
 import { Tag } from "antd";
-import {UploadFileModal} from "@modal"
+import {UploadFileModal, ProductModal} from "@modal"
 
 const SinglePage = () => {
   const { id } = useParams();
   const [products, setProducts] = useState(null);
   const [open, setOpen] = useState(false);
   const [prodId, setprodId] = useState([])
+  const [edit, setEdit] = useState({});
   const navigate = useNavigate()
   useEffect(() => {
     const fetchProduct = async () => {
@@ -38,8 +39,9 @@ const SinglePage = () => {
     );
   }
 
-  const handleEdit = () => {
-    console.log("Edit action");
+  const editItem = (item) => {
+    setEdit(item);
+    setOpen(true);
   };
 
   const deleteItem = async (product_id) => {
@@ -60,10 +62,10 @@ const SinglePage = () => {
     setprodId(product_id)
     setOpen(true)
   }
-
   return (
     <>
       <UploadFileModal data={prodId} open={open} handleClose={() => setOpen(false)} />
+      <ProductModal open={open} items={edit} handleClose={() => setOpen(false)} />
       <Grid container spacing={2} justifyContent="center" style={{ padding: '20px' }}>
         <Grid item xs={12} md={10}>
           <Card style={{ borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
@@ -154,15 +156,15 @@ const SinglePage = () => {
                     {products.category}
                   </Tag>
                   <Divider style={{ margin: '10px 0' }} />
-                  <div className='flex justify-center'>
+                  <div className='flex justify-start items-center'>
                     <IconButton aria-label="delete" onClick={() => deleteItem(products.product_id)}>
-                      <DeleteIcon />
+                      <DeleteIcon sx={{ color: "red" }}/>
                     </IconButton>
                     <IconButton aria-label="addPhoto" onClick={() => uploadFile(products.product_id)}>
-                      <AddPhotoAlternateIcon />
+                      <AddPhotoAlternateIcon sx={{ color: "green" }}/>
                     </IconButton>
-                    <IconButton aria-label="view" onClick={() => moveSingle(products.product_id)}>
-                      <EditIcon />
+                    <IconButton aria-label="view" onClick={() => editItem(products)}>
+                      <EditIcon sx={{ color: "blue" }}/>
                     </IconButton>
                   </div>
                 </Grid>

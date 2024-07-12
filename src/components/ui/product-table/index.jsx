@@ -13,7 +13,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { ProductSingle } from "@pages"
 import { product } from "@service";
 import Notification from "@notification";
 import { UploadFileModal } from "@modal";
