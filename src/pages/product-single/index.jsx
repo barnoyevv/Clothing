@@ -6,6 +6,9 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { product } from "@service";
 import { Tag } from "antd";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+import './index.css';
 
 const SinglePage = () => {
   const { id } = useParams();
@@ -50,18 +53,45 @@ const SinglePage = () => {
         <Card style={{ borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
           <CardContent>
             <Grid container spacing={2}>
-              <Grid item xs={12} md={6} className="flex w-full">
-                {products.image_url &&
-                  products.image_url.map((url, index) => (
-                    <CardMedia
-                      key={index}
-                      component="img"
-                      height="auto"
-                      image={url}
-                      alt={`Product Image ${index + 1}`}
-                      style={{ borderRadius: '10px', marginBottom: '10px' }}
-                    />
-                  ))}
+              <Grid item xs={12} md={6}>
+                {products.image_url && (
+                  <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel">
+                    <div className="carousel-indicators">
+                      {products.image_url.map((_, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          data-bs-target="#carouselExampleIndicators"
+                          data-bs-slide-to={index}
+                          className={index === 0 ? "active" : ""}
+                          aria-current={index === 0 ? "true" : "false"}
+                          aria-label={`Slide ${index + 1}`}
+                        ></button>
+                      ))}
+                    </div>
+                    <div className="carousel-inner">
+                      {products.image_url.map((url, index) => (
+                        <div key={index} className={`carousel-item ${index === 0 ? "active" : ""}`}>
+                          <CardMedia
+                            component="img"
+                            height="auto"
+                            image={url}
+                            alt={`Product Image ${index + 1}`}
+                            style={{ borderRadius: '10px', marginBottom: '10px' }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <button className="carousel-control-prev custom-carousel-control" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                      <span className="carousel-control-prev-icon custom-carousel-control-icon" aria-hidden="true"></span>
+                      <span className="visually-hidden">Previous</span>
+                    </button>
+                    <button className="carousel-control-next custom-carousel-control" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                      <span className="carousel-control-next-icon custom-carousel-control-icon" aria-hidden="true"></span>
+                      <span className="visually-hidden">Next</span>
+                    </button>
+                  </div>
+                )}
               </Grid>
               <Grid item xs={12} md={6}>
                 <Typography variant="h4" component="div" gutterBottom style={{ color: '#3f51b5' }}>
