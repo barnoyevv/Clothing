@@ -11,7 +11,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { ToastContainer } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { ProductSingle } from "@pages"
 import { product } from "@service";
 import Notification from "@notification";
 import { UploadFileModal } from "@modal";
@@ -40,7 +42,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function Index({ data }) {
   const [open, setOpen] = useState(false);
   const [id, setId] = useState([])
-
+  const [products, setProducts] = useState({})
+  const navigate = useNavigate()
   const deleteItem = async (product_id) => {
     try {
       const response = await product.delete(product_id);
@@ -57,6 +60,9 @@ export default function Index({ data }) {
   const uploadFile = (product_id) => {
     setId(product_id)
     setOpen(true)
+  }
+  const moveSingle = (product_id) => {
+    navigate(`/main/products/${product_id}`)
   }
   return (
     <>
@@ -94,7 +100,7 @@ export default function Index({ data }) {
                     <IconButton aria-label="addPhoto" onClick={() => uploadFile(item.product_id)}>
                       <AddPhotoAlternateIcon />
                     </IconButton>
-                    <IconButton aria-label="view">
+                    <IconButton aria-label="view" onClick={() => moveSingle(item.product_id)}>
                       <VisibilityIcon />
                     </IconButton>
                   </div>

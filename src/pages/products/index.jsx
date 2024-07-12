@@ -3,6 +3,7 @@ import { Button } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { ProductModal, UploadFileModal } from "@modal"
 import { ProductTable } from "@ui"
+import { ProductSingle } from '@pages';
 import { product } from "@service"
 
 const Index = () => {

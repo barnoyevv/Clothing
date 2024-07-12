@@ -5,6 +5,7 @@ const product = {
   get: (params) => http.get("/products", { params }),
   delete: (product_id) => http.delete(`/product/${product_id}`),
   update: (data) => http.put("/product", data),
+  get_product: (product_id) => http.get(`/product/${product_id}`),
   upload: (id, file) => http.post(`/media/upload-photo?id=${id}`, file)
 }
 
